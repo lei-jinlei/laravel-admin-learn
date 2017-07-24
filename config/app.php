@@ -179,7 +179,8 @@ return [
 
         // 引入laravel-admin
         Encore\Admin\Providers\AdminServiceProvider::class,
-
+        // 引入laravel-debuger模块
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
