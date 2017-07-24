@@ -177,6 +177,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // 引入laravel-admin
+        Encore\Admin\Providers\AdminServiceProvider::class,
+        
     ],
 
     /*
