@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Movie;
+use App\Models\Country;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -23,9 +23,8 @@ class CountryController extends Controller
     public function index()
     {
         return Admin::content(function (Content $content) {
-
-            $content->header('测试用户');
-            $content->description('这是测试用户的数据');
+            $content->header('城市管理');
+            $content->description('');
 
             $content->body($this->grid());
         });
@@ -40,7 +39,6 @@ class CountryController extends Controller
     public function edit($id)
     {
         return Admin::content(function (Content $content) use ($id) {
-
             $content->header('header');
             $content->description('description');
 
@@ -56,7 +54,6 @@ class CountryController extends Controller
     public function create()
     {
         return Admin::content(function (Content $content) {
-
             $content->header('header');
             $content->description('description');
 
@@ -71,12 +68,18 @@ class CountryController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Movie::class, function (Grid $grid) {
-
+        return Admin::grid(Country::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
-
-            $grid->created_at();
-            $grid->updated_at();
+            $grid->name('城市名称');
+            $grid->letter('城市代码');
+            $grid->continent('所属大洲')->display(function ($continent) {
+                $api = new ApiController;
+                $country = $api->country;
+                if ($continent) {
+                    return $country[$continent];
+                }
+                return '';
+            });
         });
     }
 
@@ -87,13 +90,18 @@ class CountryController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Movie::class, function (Form $form) {
-
+        return Admin::form(Country::class, function (Form $form) {
             $form->display('id', 'ID');
-            $form->text('name', '名字');
-
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->text('name', '城市名称')->rules('required');
+            $form->text('letter', '城市代码')->rules('required');
+            $form->select('continent', '所属大洲')
+                ->options(function ($id) {
+                    $api = new ApiController;
+                    $country = $api->country;
+                    return $country;
+                });
         });
     }
+
+
 }

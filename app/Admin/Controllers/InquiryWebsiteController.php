@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\User;
+use App\Models\InquiryWebsite;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class UserController extends Controller
+class InquiryWebsiteController extends Controller
 {
     use ModelForm;
 
@@ -24,8 +24,8 @@ class UserController extends Controller
     {
         return Admin::content(function (Content $content) {
 
-            $content->header('测试用户');
-            $content->description('这是测试用户的数据');
+            $content->header('header');
+            $content->description('description');
 
             $content->body($this->grid());
         });
@@ -71,12 +71,17 @@ class UserController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(User::class, function (Grid $grid) {
+        return Admin::grid(InquiryWebsite::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
+            $grid->name('所属者姓名');
+            $grid->value('所管网址');
+            $grid->type('产品类型')->display(function ($type_id){
+                if($type_id){
 
-            $grid->created_at();
-            $grid->updated_at();
+                }
+                
+            });
         });
     }
 
@@ -87,10 +92,9 @@ class UserController extends Controller
      */
     protected function form()
     {
-        return Admin::form(User::class, function (Form $form) {
+        return Admin::form(InquiryWebsite::class, function (Form $form) {
 
             $form->display('id', 'ID');
-            $form->text('name', '名字');
 
             $form->display('created_at', 'Created At');
             $form->display('updated_at', 'Updated At');

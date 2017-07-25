@@ -13,4 +13,5 @@ Route::group([
     $router->get('/', 'HomeController@index');
     $router->resource('users', UserController::class);
     $router->resource('country', CountryController::class);
+    $router->resource('inquiry_website', InquiryWebsiteController::class);
 });
