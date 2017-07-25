@@ -78,9 +78,14 @@ class InquiryWebsiteController extends Controller
             $grid->value('所管网址');
             $grid->type('产品类型')->display(function ($type_id){
                 if($type_id){
-
+                    $product = new \App\Models\ProductCat;
+                    $products = $product->where('del', '0')->select();
+                    foreach ($products as $product) {
+                        $data[] = $product->id.'............'.$product->name;
+                    }
+                    return '';
                 }
-                
+                return '';
             });
         });
     }
