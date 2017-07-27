@@ -23,7 +23,6 @@ class GroupController extends Controller
     public function index()
     {
         return Admin::content(function (Content $content) {
-
             $content->header('header');
             $content->description('description');
 
@@ -40,7 +39,6 @@ class GroupController extends Controller
     public function edit($id)
     {
         return Admin::content(function (Content $content) use ($id) {
-
             $content->header('header');
             $content->description('description');
 
@@ -56,19 +54,10 @@ class GroupController extends Controller
     public function create()
     {
         return Admin::content(function (Content $content) {
-
             $content->header('header');
             $content->description('description');
 
             $content->body($this->form());
-        });
-    }
-
-    public function edit_user()
-    {
-        return Admin::content(function (Content $content) {
-            $content->header('header');
-            $content->description('description');
         });
     }
 
@@ -82,8 +71,12 @@ class GroupController extends Controller
         return Admin::grid(Group::class, function (Grid $grid) {
             $grid->group_name('小组名称');
             $grid->group_desc('小组详情');
-            $grid->id('小组成员')->display(function ($id) {
-                return '<a href="group/edit_user/id/'.$id.'">小组成员</a>';
+            $grid->users()->display(function ($users) {
+                $users = array_map(function ($users) {
+                    return "<span class='label label-success'>{$users['name']}</span>";
+                }, $users);
+
+                return join('&nbsp;', $users);
             });
         });
     }

@@ -76,9 +76,7 @@ class GroupUserController extends Controller
         return Admin::grid(GroupUser::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
-
-            $grid->created_at();
-            $grid->updated_at();
+            
         });
     }
 
@@ -93,8 +91,6 @@ class GroupUserController extends Controller
 
             $form->display('id', 'ID');
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
         });
     }
 }

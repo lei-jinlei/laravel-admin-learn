@@ -28,4 +28,9 @@ class Group extends Authenticatable
     protected $hidden = [
         'remember_token',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(AdminUser::class, 'group_user','gid');
+    }
 }
