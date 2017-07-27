@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Country;
+use App\Models\Group;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class CountryController extends Controller
+class GroupController extends Controller
 {
     use ModelForm;
 
@@ -23,8 +23,9 @@ class CountryController extends Controller
     public function index()
     {
         return Admin::content(function (Content $content) {
-            $content->header('城市管理');
-            $content->description('');
+
+            $content->header('header');
+            $content->description('description');
 
             $content->body($this->grid());
         });
@@ -39,6 +40,7 @@ class CountryController extends Controller
     public function edit($id)
     {
         return Admin::content(function (Content $content) use ($id) {
+
             $content->header('header');
             $content->description('description');
 
@@ -54,10 +56,19 @@ class CountryController extends Controller
     public function create()
     {
         return Admin::content(function (Content $content) {
+
             $content->header('header');
             $content->description('description');
 
             $content->body($this->form());
+        });
+    }
+
+    public function edit_user()
+    {
+        return Admin::content(function (Content $content) {
+            $content->header('header');
+            $content->description('description');
         });
     }
 
@@ -68,17 +79,11 @@ class CountryController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Country::class, function (Grid $grid) {
-            $grid->id('ID')->sortable();
-            $grid->name('城市名称');
-            $grid->letter('城市代码');
-            $grid->continent('所属大洲')->display(function ($continent) {
-                $api = new ApiController;
-                $country = $api->continent;
-                if ($continent) {
-                    return $country[$continent];
-                }
-                return '';
+        return Admin::grid(Group::class, function (Grid $grid) {
+            $grid->group_name('小组名称');
+            $grid->group_desc('小组详情');
+            $grid->id('小组成员')->display(function ($id) {
+                return '<a href="group/edit_user/id/'.$id.'">小组成员</a>';
             });
         });
     }
@@ -90,18 +95,9 @@ class CountryController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Country::class, function (Form $form) {
-            $form->display('id', 'ID');
-            $form->text('name', '城市名称')->rules('required');
-            $form->text('letter', '城市代码')->rules('required');
-            $form->select('continent', '所属大洲')
-                ->options(function ($id) {
-                    $api = new ApiController;
-                    $country = $api->country;
-                    return $country;
-                });
+        return Admin::form(Group::class, function (Form $form) {
+            $form->text('group_name', '小组名称')->rules('required');
+            $form->textarea('group_desc', '小组详情');
         });
     }
-
-
 }

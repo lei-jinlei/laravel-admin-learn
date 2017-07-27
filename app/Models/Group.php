@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class InquiryWebsite extends Authenticatable
+class Group extends Authenticatable
 {
     use Notifiable;
     public $timestamps = false;
-    public $table = 'inquiry_website';
+    public $table = 'group';
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +17,7 @@ class InquiryWebsite extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'value',
+        'group_name', 'group_desc',
     ];
 
     /**
@@ -28,9 +28,4 @@ class InquiryWebsite extends Authenticatable
     protected $hidden = [
         'remember_token',
     ];
-
-    public function productCat()
-    {
-        return $this->belongsTo(ProductCat::class, 'type');
-    }
 }

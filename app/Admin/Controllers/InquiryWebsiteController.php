@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\InquiryWebsite;
 
+
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
@@ -76,17 +77,7 @@ class InquiryWebsiteController extends Controller
             $grid->id('ID')->sortable();
             $grid->name('所属者姓名');
             $grid->value('所管网址');
-            $grid->type('产品类型')->display(function ($type_id){
-                if($type_id){
-                    $product = new \App\Models\ProductCat;
-                    $products = $product->where('del', '0')->select();
-                    foreach ($products as $product) {
-                        $data[] = $product->id.'............'.$product->name;
-                    }
-                    return '';
-                }
-                return '';
-            });
+            $grid->productCat()->name('产品类型');
         });
     }
 
@@ -100,9 +91,15 @@ class InquiryWebsiteController extends Controller
         return Admin::form(InquiryWebsite::class, function (Form $form) {
 
             $form->display('id', 'ID');
+            $form->text('name', '所属者姓名')->rules('required');
+            $form->text('value', '所管网址')->rules('required');
+            $form->select('type')->options(function ($id) {
+                $api = new ApiController;
+                $country = $api->productCat();
+                return $country;
+            });
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+
         });
     }
 }

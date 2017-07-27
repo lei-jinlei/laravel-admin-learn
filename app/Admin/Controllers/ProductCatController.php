@@ -2,31 +2,27 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Country;
-
+use App\Http\Controllers\Controller;
+use App\Models\ProductCat;
 use Encore\Admin\Form;
-use Encore\Admin\Grid;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Layout\Content;
-use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
+use Encore\Admin\Tree;
 
-class CountryController extends Controller
+class ProductCatController extends Controller
 {
     use ModelForm;
 
-    /**
-     * Index interface.
-     *
-     * @return Content
-     */
     public function index()
     {
         return Admin::content(function (Content $content) {
-            $content->header('城市管理');
-            $content->description('');
-
-            $content->body($this->grid());
+            $content->header('分类管理');
+            $content->body(ProductCat::tree(function ($tree) {
+                $tree->query(function ($model) {
+                    return $model->where('del', 0);
+                });
+            }));
         });
     }
 
@@ -68,18 +64,9 @@ class CountryController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Country::class, function (Grid $grid) {
+        return Admin::grid(ProductCat::class, function (Grid $grid) {
             $grid->id('ID')->sortable();
-            $grid->name('城市名称');
-            $grid->letter('城市代码');
-            $grid->continent('所属大洲')->display(function ($continent) {
-                $api = new ApiController;
-                $country = $api->continent;
-                if ($continent) {
-                    return $country[$continent];
-                }
-                return '';
-            });
+            $grid->name('产品id');
         });
     }
 
@@ -90,18 +77,14 @@ class CountryController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Country::class, function (Form $form) {
+        return Admin::form(ProductCat::class, function (Form $form) {
             $form->display('id', 'ID');
-            $form->text('name', '城市名称')->rules('required');
-            $form->text('letter', '城市代码')->rules('required');
-            $form->select('continent', '所属大洲')
-                ->options(function ($id) {
-                    $api = new ApiController;
-                    $country = $api->country;
-                    return $country;
-                });
+            $form->select('pid', '父类')->options(function ($id) {
+                $api = new ApiController;
+                $country = $api->productCat();
+                return $country;
+            });
+            $form->text('name', '产品分类名')->rules('required');
         });
     }
-
-
 }

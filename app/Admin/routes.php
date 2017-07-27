@@ -14,4 +14,8 @@ Route::group([
     $router->resource('users', UserController::class);
     $router->resource('country', CountryController::class);
     $router->resource('inquiry_website', InquiryWebsiteController::class);
+    $router->resource('product_cat', ProductCatController::class);
+    $router->resource('inquiry_from', InquiryFromController::class);
+    $router->resource('group', GroupController::class);
+    $router->resource('group_user', GroupUserController::class);
 });
