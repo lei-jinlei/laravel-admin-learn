@@ -39,8 +39,7 @@ class GroupUserController extends Controller
      */
     public function edit($id)
     {
-        dd($id);
-        return Admin::content(function (Content $content) {
+        return Admin::content(function (Content $content) use ($id) {
 
             $content->header('header');
             $content->description('description');
@@ -75,8 +74,24 @@ class GroupUserController extends Controller
     {
         return Admin::grid(GroupUser::class, function (Grid $grid) {
 
-            $grid->id('ID')->sortable();
-            
+            $grid->filter(function ($filter) {
+                // 如果过滤器太多，可以使用弹出模态框来显示过滤器.
+                // $filter->useModal();
+
+                // 禁用id查询框
+                $filter->disableIdFilter();
+
+                $filter->is('gid', '小组id');
+            });
+
+            $grid->group()->group_name('组名');
+            $grid->user('组员')->display(function ($users) {
+                    return "<span class='label label-success'>{$users['name']}</span>";
+            });
+            $grid->leader('组长')->display(function ($leader) {
+                    return $leader ? "<span class='label label-success'>是</span>" : "<span class='label label-success'>否</span>";
+            });
+
         });
     }
 
@@ -88,9 +103,19 @@ class GroupUserController extends Controller
     protected function form()
     {
         return Admin::form(GroupUser::class, function (Form $form) {
-
-            $form->display('id', 'ID');
-
+            $form->select('gid','小组名称')->options(function ($gid){
+                $api = new ApiController;
+                $groups = $api->getGroups();
+                return $groups;
+            });
+            $form->select('admin_user_id', '用户')->options(function ($admin_user_id){
+                $api = new ApiController;
+                $users = $api->getUsers();
+                return $users;
+            });
+            $form->radio('leader', '是否为组长')->options(
+                ['0' => '否', '1' => '是']
+            )->default('0');
         });
     }
 }

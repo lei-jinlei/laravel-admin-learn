@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Group;
+use App\Models\InquiryType;
 
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -11,7 +11,7 @@ use Encore\Admin\Layout\Content;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\ModelForm;
 
-class GroupController extends Controller
+class InquiryTypeController extends Controller
 {
     use ModelForm;
 
@@ -23,6 +23,7 @@ class GroupController extends Controller
     public function index()
     {
         return Admin::content(function (Content $content) {
+
             $content->header('header');
             $content->description('description');
 
@@ -39,6 +40,7 @@ class GroupController extends Controller
     public function edit($id)
     {
         return Admin::content(function (Content $content) use ($id) {
+
             $content->header('header');
             $content->description('description');
 
@@ -54,6 +56,7 @@ class GroupController extends Controller
     public function create()
     {
         return Admin::content(function (Content $content) {
+
             $content->header('header');
             $content->description('description');
 
@@ -68,20 +71,11 @@ class GroupController extends Controller
      */
     protected function grid()
     {
-        return Admin::grid(Group::class, function (Grid $grid) {
-            $grid->group_name('小组名称');
-            $grid->group_desc('小组详情');
-            $grid->users()->display(function ($users) {
-                $users = array_map(function ($users) {
-                    return "<span class='label label-success'>{$users['name']}</span>";
-                }, $users);
+        return Admin::grid(InquiryType::class, function (Grid $grid) {
 
-                return join('&nbsp;', $users);
-            });
-            $grid->id('小组管理')->display(function ($id) {
-                $params = ['gid' => $id];
-                return '<a class="btn btn-sm btn-primary" href="'.url('admin/group_user').'?'.http_build_query($params).'">'.'小组成员</a>';
-            });
+            $grid->id('ID')->sortable();
+            $grid->value('类型');
+            $grid->description('描述');
         });
     }
 
@@ -92,9 +86,9 @@ class GroupController extends Controller
      */
     protected function form()
     {
-        return Admin::form(Group::class, function (Form $form) {
-            $form->text('group_name', '小组名称')->rules('required');
-            $form->textarea('group_desc', '小组详情');
+        return Admin::form(InquiryType::class, function (Form $form) {
+            $form->text('value', '类型')->rules('required');
+            $form->text('description', '描述');
         });
     }
 }

@@ -18,4 +18,6 @@ Route::group([
     $router->resource('inquiry_from', InquiryFromController::class);
     $router->resource('group', GroupController::class);
     $router->resource('group_user', GroupUserController::class);
+    $router->resource('inquiry_language', InquiryLanguageController::class);
+    $router->resource('inquiry_type', InquiryTypeController::class);
 });

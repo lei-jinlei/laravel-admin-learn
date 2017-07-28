@@ -4,6 +4,8 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProductCat;
+use App\Models\Group;
+use App\Models\AdminUser;
 
 class ApiController extends Controller
 {
@@ -38,5 +40,27 @@ class ApiController extends Controller
             $cat_arr[$cat->id] = $cat->name;
         }
         return $cat_arr;
+    }
+
+    // 获取所有的用户
+    public function getUsers()
+    {
+        $users = new AdminUser;
+        $users = $users->get();
+        foreach ($users as $user) {
+            $user_arr[$user->id] = $user->name;
+        }
+        return $user_arr;
+    }
+
+    // 获取所有的小组
+    public function getGroups()
+    {
+        $groups = new Group;
+        $groups = $groups->get();
+        foreach ($groups as $group) {
+            $group_arr[$group->id] = $group->group_name;
+        }
+        return $group_arr;
     }
 }
