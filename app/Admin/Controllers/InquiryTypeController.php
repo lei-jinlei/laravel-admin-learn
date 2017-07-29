@@ -74,7 +74,7 @@ class InquiryTypeController extends Controller
         return Admin::grid(InquiryType::class, function (Grid $grid) {
 
             $grid->id('ID')->sortable();
-            $grid->value('类型');
+            $grid->name('类型');
             $grid->description('描述');
         });
     }
@@ -87,7 +87,7 @@ class InquiryTypeController extends Controller
     protected function form()
     {
         return Admin::form(InquiryType::class, function (Form $form) {
-            $form->text('value', '类型')->rules('required');
+            $form->text('name', '类型')->rules('required');
             $form->text('description', '描述');
         });
     }

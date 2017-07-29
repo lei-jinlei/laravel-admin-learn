@@ -28,4 +28,9 @@ class Country extends Authenticatable
     protected $hidden = [
         'remember_token',
     ];
+
+    public function inquiry()
+    {
+        return $this->hasMany(Inquiry::class, 'country');
+    }
 }

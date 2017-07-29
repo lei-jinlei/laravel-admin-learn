@@ -5,7 +5,11 @@ namespace App\Admin\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\ProductCat;
 use App\Models\Group;
+use App\Models\Country;
+use App\Models\InquiryLanguage;
 use App\Models\AdminUser;
+use App\Models\InquiryFrom;
+use App\Models\InquiryType;
 
 class ApiController extends Controller
 {
@@ -28,6 +32,15 @@ class ApiController extends Controller
         '14'=>'拉丁美洲',
         '15'=>'中东',
         '16'=>'大洋洲',
+    );
+
+    // 询盘状态码
+    public $state = array(
+        '0'=>'等待处理',
+        '1'=>'询盘处理中',
+        '2'=>'无效客户',
+        '3'=>'已成交',
+        '4'=>'未成交',
     );
 
     // 获取产品和id数组列表
@@ -62,5 +75,45 @@ class ApiController extends Controller
             $group_arr[$group->id] = $group->group_name;
         }
         return $group_arr;
+    }
+
+    public function getLanguage()
+    {
+        $languages = new InquiryLanguage;
+        $languages = $languages->get();
+        foreach ($languages as $language) {
+            $language_arr[$language->id] = $language->value;
+        }
+        return $language_arr;
+    }
+
+    public function getCountry()
+    {
+        $countrys = new Country;
+        $countrys = $countrys->get();
+        foreach ($countrys as $country) {
+            $country_arr[$country->id] = $country->name;
+        }
+        return $country_arr;
+    }
+
+    public function getInquiryFrom()
+    {
+        $froms = new InquiryFrom;
+        $froms = $froms->get();
+        foreach ($froms as $from) {
+            $from_arr[$from->id] = $from->value;
+        }
+        return $from_arr;
+    }
+
+    public function getInquiryType()
+    {
+        $types = new InquiryType;
+        $types = $types->get();
+        foreach ($types as $type) {
+            $type_arr[$type->id] = $type->name;
+        }
+        return $type_arr;
     }
 }

@@ -69,7 +69,7 @@ class GroupController extends Controller
     protected function grid()
     {
         return Admin::grid(Group::class, function (Grid $grid) {
-            $grid->group_name('小组名称');
+            $grid->group_name('小组名称')->sortable();
             $grid->group_desc('小组详情');
             $grid->users()->display(function ($users) {
                 $users = array_map(function ($users) {

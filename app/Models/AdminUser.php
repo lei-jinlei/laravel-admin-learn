@@ -32,4 +32,14 @@ class AdminUser extends Authenticatable
     {
         return $this->belongsToMany(Group::class, 'group_user');
     }
+
+    public function entryInquiry()
+    {
+        return $this->hasOne(Inquiry::class, 'uid');
+    }
+
+    public function dealInquiry()
+    {
+        return $this->belongsToMany(Inquiry::class, 'user_inquiry');
+    }
 }

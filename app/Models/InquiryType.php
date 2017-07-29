@@ -17,7 +17,7 @@ class InquiryType extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'value', 'description',
+        'name', 'description',
     ];
 
     /**
@@ -28,4 +28,9 @@ class InquiryType extends Authenticatable
     protected $hidden = [
         'remember_token',
     ];
+
+    public function inquiry()
+    {
+        return $this->hasMany(Inquiry::class, 'type');
+    }
 }

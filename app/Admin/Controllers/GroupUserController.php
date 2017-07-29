@@ -89,7 +89,7 @@ class GroupUserController extends Controller
                     return "<span class='label label-success'>{$users['name']}</span>";
             });
             $grid->leader('组长')->display(function ($leader) {
-                    return $leader ? "<span class='label label-success'>是</span>" : "<span class='label label-success'>否</span>";
+                    return $leader ? "<span class='label label-success'>是</span>" : "<span class='label label-danger'>否</span>";
             });
 
         });
