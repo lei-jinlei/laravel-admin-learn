@@ -48,4 +48,9 @@ class Inquiry extends Authenticatable
     {
         return $this->belongsToMany(AdminUser::class, 'user_inquiry','iid');
     }
+
+    public function language()
+    {
+        return $this->belongsTo(InquiryLanguage::class);
+    }
 }

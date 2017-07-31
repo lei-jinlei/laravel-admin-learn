@@ -61,6 +61,17 @@ class InquiryController extends Controller
         });
     }
 
+    public function show($id)
+    {
+        return Admin::content(function (Content $content) use ($id) {
+            $content->header('header');
+            $content->description('description');
+
+            $content->body($this->form()->show($id));
+        });
+
+    }
+
     /**
      * Make a grid builder.
      *
@@ -72,9 +83,9 @@ class InquiryController extends Controller
             $grid->id('ID')->sortable();
             $grid->column('询盘编号')->display(function () {
                 if ($this->state < 1) {
-                    return '<span class="text-danger">'.$this->inquiry_sn.'</span>';
+                    return '<a class="text-danger" href="#">'.$this->inquiry_sn.'</a>';
                 } else {
-                    return '<span class="text-success">'.$this->inquiry_sn.'</span>';
+                    return '<a class="text-success" href="#">'.$this->inquiry_sn.'</a>';
                 }
             });
             $grid->name('客户名称');
@@ -140,8 +151,52 @@ class InquiryController extends Controller
             $form->text('from_url', '来源网站');
             $form->text('site_manger', '网站管理人');
             $form->time('inquiry_time', '询盘时间');
-            $form->textarea('content', '询盘详情');
+            $form->editor('content', '询盘详情');
+        });
+    }
 
+    /**
+     * 处理询盘
+     * @return [type] [description]
+     */
+    protected function deal_form()
+    {
+        return Admin::form(Inquiry::class, function (Form $form) {
+            $form->display('inquiry_sn');
+            $form->display('language', '询盘语言')->with(function ($value) {
+                $api =new ApiController;
+                $languages = $api->getLanguage();
+                return $languages[$value];
+            });
+            $form->display('country', '询盘地区')->with(function ($value) {
+                $api =new ApiController;
+                $countrys = $api->getCountry();
+                return $countrys[$value];
+            });
+            $form->display('name', '客户名称');
+            $form->display('email', 'Email');
+            $form->display('iphone', '联系方式');
+            $form->display('other_phone', '其他联系方式');
+            $form->display('cid', '产品分类')->with(function ($value) {
+                $api =new ApiController;
+                $products = $api->productCat();
+                return $products[$value];
+            });
+            $form->display('from', '询盘来源')->with(function ($value) {
+                $api =new ApiController;
+                $froms = $api->getInquiryFrom();
+                return $froms[$value];
+            });
+            $form->display('type', '询盘种类')->with(function ($value) {
+                $api =new ApiController;
+                $types = $api->getInquiryType();
+                return $types[$value];
+            });
+            $form->display('from_page', '来源地址');
+            $form->display('from_url', '来源网站');
+            $form->display('site_manger', '网站管理人');
+            $form->display('inquiry_time', '询盘时间');
+            $form->display('content', '询盘详情');
         });
     }
 }
