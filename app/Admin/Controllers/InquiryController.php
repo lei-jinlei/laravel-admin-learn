@@ -67,7 +67,7 @@ class InquiryController extends Controller
             $content->header('header');
             $content->description('description');
 
-            $content->body($this->form('deal'));
+            $content->body($this->form()->show($id));
         });
 
     }
